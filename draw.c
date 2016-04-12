@@ -49,7 +49,7 @@ jdyrlandweaver
 ====================*/
 void draw_polygons( struct matrix *polygons, screen s, color c ) {
   int x;
-  for (x = 0; x < polygons->lastcol; x += 3){
+  for (x = 0; x < polygons->lastcol-2; x += 3){
     if (forward(polygons->m[0][x], polygons->m[1][x], polygons->m[2][x], polygons->m[0][x+1], polygons->m[1][x+1], 
     polygons->m[2][x+1], polygons->m[0][x+2], polygons->m[1][x+2], polygons->m[2][x+2])){
       draw_line(polygons->m[0][x], polygons->m[1][x], polygons->m[0][x + 1], polygons->m[1][x + 1], s, c);
@@ -72,7 +72,10 @@ int forward(double x0, double y0, double z0, double x1, double y1, double z1, do
   double nx = ay * bz - az * by;
   double ny = az * bx - ax * bz;
   double nz = ax * by - ay * bx;
-  return nx * vx + ny * vy + nz * vz < 0;
+  if (nx * vx + ny * vy + nz * vz < 0){
+    return 1;
+  }
+  return 0;
 }
 
 /*======== void add_sphere() ==========
@@ -353,30 +356,8 @@ void add_box( struct matrix * points,
   add_polygon(points, x, y2, z, x, y, z, x, y, z2);
   add_polygon(points, x2, y, z, x2, y2, z, x2, y2, z2);
   add_polygon(points, x2, y2, z2, x2, y, z2, x2, y, z);
-  /*add_edge( points, 
-	    x, y, z, 
-	    x, y, z );
-  add_edge( points, 
-	    x, y2, z, 
-	    x, y2, z );
-  add_edge( points, 
-	    x2, y, z, 
-	    x2, y, z );
-  add_edge( points, 
-	    x2, y2, z, 
-	    x2, y2, z );
-  add_edge( points, 
-	    x, y, z2, 
-	    x, y, z2 );
-  add_edge( points, 
-	    x, y2, z2, 
-	    x, y2, z2 );
-  add_edge( points, 
-	    x2, y, z2, 
-	    x2, y, z2 );
-  add_edge( points, 
-	    x2, y2, z2, 
-	    x2, y2, z2 );*/
+  
+  
 }
   
 /*======== void add_circle() ==========
